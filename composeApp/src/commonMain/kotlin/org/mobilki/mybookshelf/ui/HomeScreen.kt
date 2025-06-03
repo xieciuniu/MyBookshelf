@@ -156,18 +156,18 @@ fun SingleBook(book: BookSearch, bookCoverUrl: String?) {
                 .padding(end = 8.dp),
             contentAlignment = Alignment.Center
         ) {
-//            if (bookCoverUrl != null) {
-//                val painter = rememberAsyncImagePainter(model = bookCoverUrl)
-//                        Image(
-//                            painter = painter, // or state.painter
-//                            contentDescription = "${book.title} cover",
-//                            contentScale = ContentScale.Crop, // Or your preferred scale
-//                            modifier = Modifier.fillMaxSize()
-//                        )
-//
-//            } else {
-//                println("COIL_DEBUG: bookCoverUrl is null for book: ${book.title}")
-//            }
+            if (bookCoverUrl != null) {
+                val painter = rememberAsyncImagePainter(model = bookCoverUrl)
+                Image(
+                    painter = painter, // or state.painter
+                    contentDescription = "${book.title} cover",
+                    contentScale = ContentScale.Crop, // Or your preferred scale
+                    modifier = Modifier.fillMaxSize()
+                )
+
+            } else {
+                println("COIL_DEBUG: bookCoverUrl is null for book: ${book.title}")
+            }
 
             if (bookCoverUrl != null){
                 SubcomposeAsyncImage(
