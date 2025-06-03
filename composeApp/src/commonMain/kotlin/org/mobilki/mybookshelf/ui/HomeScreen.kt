@@ -52,43 +52,7 @@ import org.mobilki.mybookshelf.network.ApiService
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
-    var searchQuery by remember { mutableStateOf("") }
-    var searchResult by remember { mutableStateOf<List<BookSearch>>(emptyList()) }
-    var isLoading by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    // Corouine scope for launching network requests
-    val coroutineScope = rememberCoroutineScope()
-
-    val apiService = remember { ApiService() }
-
-    fun performSearch() {
-        if (searchQuery.isBlank()) {
-            searchResult = emptyList()
-            errorMessage = null
-            return
-        }
-        coroutineScope.launch {
-            isLoading = true
-            errorMessage = null
-            val resultFromApi = apiService.searchBooks(searchQuery)
-            resultFromApi.fold(
-                onSuccess = { books ->
-                    searchResult = books
-                    if (books.isEmpty()) {
-                        errorMessage = "No books found for \"$searchQuery\""
-                    }
-                },
-                onFailure = { exception ->
-                    searchResult = emptyList()
-                    errorMessage = "Failed to fetch books: ${exception.message ?: "An unknown error occurred"}"
-                    println("Search failed: ${exception.stackTraceToString()}")
-                }
-            )
-
-            isLoading = false
-        }
-    }
 
     Scaffold(
       topBar = {
@@ -141,57 +105,3 @@ fun HomeScreen() {
     }
 }
 
-@Composable
-fun SingleBook(book: BookSearch, bookCoverUrl: String?) {
-    Row (
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-        Box(
-            modifier = Modifier
-                .size(width = 60.dp, height = 90.dp)
-                .padding(end = 8.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            if (bookCoverUrl != null) {
-                val painter = rememberAsyncImagePainter(model = bookCoverUrl)
-                Image(
-                    painter = painter, // or state.painter
-                    contentDescription = "${book.title} cover",
-                    contentScale = ContentScale.Crop, // Or your preferred scale
-                    modifier = Modifier.fillMaxSize()
-                )
-
-            } else {
-                println("COIL_DEBUG: bookCoverUrl is null for book: ${book.title}")
-            }
-
-            if (bookCoverUrl != null){
-                SubcomposeAsyncImage(
-                    model = bookCoverUrl,
-                    loading = {
-                        CircularProgressIndicator()
-                    },
-                    contentDescription = "${book.title} cover",
-                )
-            } else {
-                Text("No cover")
-            }
-        }
-
-
-        Column(modifier = Modifier.padding(vertical = 8.dp)) {
-            Text(
-                text = book.title ?: "No title",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
-                text = book.author.toString(),
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
-    }
-}
