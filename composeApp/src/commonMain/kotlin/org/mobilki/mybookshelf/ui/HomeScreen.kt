@@ -37,6 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
+import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
@@ -75,16 +76,13 @@ fun HomeScreen() {
                 onSuccess = { books ->
                     searchResult = books
                     if (books.isEmpty()) {
-                        // It's a successful call, but no books matched the query
                         errorMessage = "No books found for \"$searchQuery\""
                     }
-                    // If books is not empty, errorMessage remains null, showing the list
                 },
                 onFailure = { exception ->
                     searchResult = emptyList()
-                    // Provide a more user-friendly error message
                     errorMessage = "Failed to fetch books: ${exception.message ?: "An unknown error occurred"}"
-                    println("Search failed: ${exception.stackTraceToString()}") // Log the full error for your debugging
+                    println("Search failed: ${exception.stackTraceToString()}")
                 }
             )
 
@@ -128,7 +126,7 @@ fun HomeScreen() {
                 Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
             } else {
                 if (searchResult.isEmpty() && searchQuery.isNotBlank() && !isLoading) {
-                    Text("No result found for \"$searchQuery\"")
+                    //Text("No result found for \"$searchQuery\"")
                 } else {
                     LazyColumn (modifier = Modifier.fillMaxSize()) {
                         items(searchResult) { book ->
@@ -158,53 +156,29 @@ fun SingleBook(book: BookSearch, bookCoverUrl: String?) {
                 .padding(end = 8.dp),
             contentAlignment = Alignment.Center
         ) {
-            if (bookCoverUrl != null) {
-                val painter = rememberAsyncImagePainter(model = bookCoverUrl)
-//                when (val state = painter.state) {
-//                    is AsyncImagePainter.State.Loading -> {
-//                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
-//                        println("COIL_DEBUG: rememberAsyncImagePainter - Loading URL: $bookCoverUrl")
-//                    }
-//                    is AsyncImagePainter.State.Error -> {
-////                        Icon(
-////                            Icons.Filled.BrokenImage,
-////                            contentDescription = "Error loading image",
-////                            modifier = Modifier.size(48.dp),
-////                            tint = MaterialTheme.colorScheme.error
-////                        )
-//                        Text("Error")
-//                        println("COIL_DEBUG: rememberAsyncImagePainter - Error for URL: $bookCoverUrl, Exception: ${state.result.throwable}")
-//                        state.result.throwable?.printStackTrace()
-//                    }
-//                    is AsyncImagePainter.State.Success -> {
-                        Image(
-                            painter = painter, // or state.painter
-                            contentDescription = "${book.title} cover",
-                            contentScale = ContentScale.Crop, // Or your preferred scale
-                            modifier = Modifier.fillMaxSize()
-                        )
-//                        println("COIL_DEBUG: rememberAsyncImagePainter - Success for URL: $bookCoverUrl")
-//                    }
-//                    is AsyncImagePainter.State.Empty -> { // Model was null, empty, or an unsupported type
-////                        Icon(
-////                            Icons.Filled.Book, // Or BrokenImage if more appropriate
-////                            contentDescription = "Image is empty or model is invalid",
-////                            modifier = Modifier.size(48.dp),
-////                            tint = MaterialTheme.colorScheme.outline
-////                        )
-//                        Text("Loading")
-//                        println("COIL_DEBUG: rememberAsyncImagePainter - Empty state for URL: $bookCoverUrl")
-//                    }
-//                }
+//            if (bookCoverUrl != null) {
+//                val painter = rememberAsyncImagePainter(model = bookCoverUrl)
+//                        Image(
+//                            painter = painter, // or state.painter
+//                            contentDescription = "${book.title} cover",
+//                            contentScale = ContentScale.Crop, // Or your preferred scale
+//                            modifier = Modifier.fillMaxSize()
+//                        )
+//
 //            } else {
-                // Placeholder if bookCoverUrl is null
-//                Icon(
-//                    Icons.Filled.Book,
-//                    contentDescription = "No cover available",
-//                    modifier = Modifier.size(48.dp),
-//                    tint = MaterialTheme.colorScheme.outline
-//                )
-                println("COIL_DEBUG: bookCoverUrl is null for book: ${book.title}")
+//                println("COIL_DEBUG: bookCoverUrl is null for book: ${book.title}")
+//            }
+
+            if (bookCoverUrl != null){
+                SubcomposeAsyncImage(
+                    model = bookCoverUrl,
+                    loading = {
+                        CircularProgressIndicator()
+                    },
+                    contentDescription = "${book.title} cover",
+                )
+            } else {
+                Text("No cover")
             }
         }
 
