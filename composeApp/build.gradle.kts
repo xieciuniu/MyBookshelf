@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
@@ -51,6 +52,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
+            implementation(libs.koin.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -60,12 +62,14 @@ kotlin {
             dependencies {
                 // Ktor engine for Android (OkHttp is a common choice)
                 implementation(libs.ktor.client.okhttp)
+                implementation(libs.android.driver)
             }
         }
 
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(libs.native.driver)
         }
         
     }
@@ -102,3 +106,10 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName.set("org.mobilki.mybookshelf.data.local.model")
+        }
+    }
+}

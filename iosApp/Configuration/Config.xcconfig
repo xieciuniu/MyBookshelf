@@ -1,4 +1,4 @@
-TEAM_ID=
+TEAM_ID=FC3RG2JLGW
 
 PRODUCT_NAME=My Bookshelf
 PRODUCT_BUNDLE_IDENTIFIER=org.mobilki.mybookshelf.MyBookshelf$(TEAM_ID)
