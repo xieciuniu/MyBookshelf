@@ -53,6 +53,7 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
             implementation(libs.koin.core)
+            implementation(libs.runtime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -109,7 +110,7 @@ dependencies {
 sqldelight {
     databases {
         create("AppDatabase") {
-            packageName.set("org.mobilki.mybookshelf.data.local.model")
+            packageName.set("org.mobilki.mybookshelf.sqldelight")
         }
     }
 }
