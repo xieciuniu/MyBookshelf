@@ -1,7 +1,6 @@
-package org.mobilki.mybookshelf.ui
+package org.mobilki.mybookshelf.presentation.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +16,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -31,23 +29,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import coil3.compose.AsyncImagePainter
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.rememberAsyncImagePainter
-import io.ktor.client.request.header
-import io.ktor.client.request.parameter
-import io.ktor.http.CacheControl
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
-import org.mobilki.mybookshelf.model.BookSearch
-import org.mobilki.mybookshelf.network.ApiService
+import org.mobilki.mybookshelf.data.remote.dto.BookSearch
+import org.mobilki.mybookshelf.data.remote.ApiService
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

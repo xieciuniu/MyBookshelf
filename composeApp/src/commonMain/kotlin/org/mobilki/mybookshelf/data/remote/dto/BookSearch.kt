@@ -1,4 +1,4 @@
-package org.mobilki.mybookshelf.model
+package org.mobilki.mybookshelf.data.remote.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
