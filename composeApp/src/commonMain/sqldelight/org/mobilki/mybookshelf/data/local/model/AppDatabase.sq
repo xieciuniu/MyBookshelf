@@ -84,3 +84,26 @@ SELECT A.*
 FROM Author A
 JOIN BookAuthor BA ON A.id = BA.authorId
 WHERE BA.bookId = ?;
+
+-- Insert queries --
+
+-- insert a new book and returns the id of the newly inserted row
+insertBook:
+INSERT INTO Book(title, isbn, publishYear, pageCount, coverPath, status, createdAt)
+VALUES (?, ?, ?, ?, ?, ?, (strftime('%s', 'now')));
+
+-- get newest book
+newestBookId:
+SELECT id FROM Book ORDER BY id DESC LIMIT 1;
+
+insertAuthor:
+INSERT OR IGNORE INTO Author(name) VALUES(?);
+
+-- Finds an author by name and returns their id. We'll use this to get the ID
+-- of an author we just inserted (or one that already existed).
+getAuthorIdByName:
+SELECT id FROM Author WHERE name = ?;
+
+-- Links a book and an author together in our linking table.
+linkAuthorToBook:
+INSERT INTO BookAuthor(bookId, authorId) VALUES (?, ?);
