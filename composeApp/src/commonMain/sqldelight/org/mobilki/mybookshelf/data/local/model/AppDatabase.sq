@@ -1,0 +1,86 @@
+IMPORT org.mobilki.mybookshelf.data.local.model.BookStatus;
+
+
+-- The Book table is the central entity in database
+CREATE TABLE Book(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    isbn TEXT,
+    publishYear INTEGER,
+    pageCount INTEGER,
+    coverPath TEXT, -- stores a local file path to the cover image
+    status TEXT AS BookStatus NOT NULL,
+    createdAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+
+CREATE TABLE Author (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE BookAuthor (
+    bookId INTEGER NOT NULL,
+    authorId INTEGER NOT NULL,
+    PRIMARY KEY (bookId, authorId),
+    FOREIGN KEY (bookId) REFERENCES Book(id),
+    FOREIGN KEY (authorId) REFERENCES Author(id)
+);
+
+CREATE TABLE Category (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE BookCategory (
+    bookId INTEGER NOT NULL,
+    categoryId INTEGER NOT NULL,
+    PRIMARY KEY (bookId, categoryId),
+    FOREIGN KEY (bookId) REFERENCES Book(id),
+    FOREIGN KEY (categoryId) REFERENCES Category(id)
+);
+
+CREATE TABLE Chapter (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    bookId INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    ordering INTEGER NOT NULL, -- To maintain the chapter order
+    FOREIGN KEY (bookId) REFERENCES Book(id)
+);
+
+-- The 'Note' table. It must be linked to a book, and can
+-- optionally be linked to a specific chapter.
+CREATE TABLE Note (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    bookId INTEGER NOT NULL,
+    chapterId INTEGER, -- Optional link to a chapter
+    content TEXT NOT NULL,
+    createdAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    modifiedAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (bookId) REFERENCES Book(id),
+    FOREIGN KEY (chapterId) REFERENCES Chapter(id)
+);
+
+CREATE TABLE QuestionAnswer (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    bookId INTEGER NOT NULL,
+    chapterId INTEGER, -- Optional
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL,
+    createdAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    modifiedAt INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (bookId) REFERENCES Book(id),
+    FOREIGN KEY (chapterId) REFERENCES Chapter(id)
+);
+
+-- Basic queries
+
+-- Get all books
+getAllBooks:
+SELECT * FROM Book;
+
+-- Get authors for a specific book
+getAuthorsForBook:
+SELECT A.*
+FROM Author A
+JOIN BookAuthor BA ON A.id = BA.authorId
+WHERE BA.bookId = ?;

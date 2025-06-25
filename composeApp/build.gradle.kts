@@ -110,7 +110,7 @@ dependencies {
 sqldelight {
     databases {
         create("AppDatabase") {
-            packageName.set("org.mobilki.mybookshelf.sqldelight")
+            packageName.set("org.mobilki.mybookshelf.data.local.model")
         }
     }
 }
