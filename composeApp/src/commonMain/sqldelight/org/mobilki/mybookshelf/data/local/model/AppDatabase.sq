@@ -99,11 +99,10 @@ SELECT id FROM Book ORDER BY id DESC LIMIT 1;
 insertAuthor:
 INSERT OR IGNORE INTO Author(name) VALUES(?);
 
--- Finds an author by name and returns their id. We'll use this to get the ID
--- of an author we just inserted (or one that already existed).
+-- Finds an author by name and returns their id
 getAuthorIdByName:
 SELECT id FROM Author WHERE name = ?;
 
--- Links a book and an author together in our linking table.
+-- Links a book and an author together in our linking table
 linkAuthorToBook:
 INSERT INTO BookAuthor(bookId, authorId) VALUES (?, ?);
