@@ -1,5 +1,7 @@
 package org.mobilki.mybookshelf.domain.model
 
+import org.mobilki.mybookshelf.data.local.model.*
+
 data class Book(
     val id: Long,
     val title: String,
@@ -11,9 +13,9 @@ data class Book(
     val isbn: String?
 )
 
-enum class BookStatus {
-    READING,
-    TO_READ,
-    COMPLETED,
-    ABANDONED
-}
+//enum class BookStatus {
+//    READING,
+//    TO_READ,
+//    COMPLETED,
+//    ABANDONED
+//}

@@ -1,6 +1,7 @@
 package org.mobilki.mybookshelf.presentation.add_book
 
-import org.mobilki.mybookshelf.data.local.model.BookStatus
+import com.benasher44.uuid.*
+import org.mobilki.mybookshelf.data.local.model.*
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -19,17 +20,18 @@ data class AddBookState(
 // Unique state for each author input field
 data class AuthorInputState @OptIn(ExperimentalUuidApi::class) constructor(
     val name: String = "",
-    val id: Long = Uuid.SIZE_BITS.toLong()
+    val id: String = uuid4().toString()
 )
 
 sealed interface AddBookEvent {
     data class OnTitleChanged(val title: String) : AddBookEvent
-    data class OnAuthorChanged(val authorId: Long, val name: String): AddBookEvent
+    data class OnAuthorChanged(val authorId: String, val name: String): AddBookEvent
     object OnAddAuthorClicked: AddBookEvent
-    data class OnRemoveAuthorClicked(val authorId: Long) : AddBookEvent
+    data class OnRemoveAuthorClicked(val authorId: String) : AddBookEvent
     data class OnStatusChanged(val status: BookStatus) : AddBookEvent
     data class OnPublishYearChanged(val year: String) : AddBookEvent
     data class OnPageCountChanged(val count: String) : AddBookEvent
     data class OnIsbnChanged(val isbn: String) : AddBookEvent
     object OnSaveBookClicked : AddBookEvent
+    object OnNavigatedAway: AddBookEvent
 }

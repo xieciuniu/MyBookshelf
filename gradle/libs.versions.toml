@@ -22,7 +22,9 @@ kotlinx.serialization = "1.8.1"
 ktorClientAndroid = "%ktorVersion%"
 kamel = "1.0.5"
 koin = "4.1.0"
+materialIconsExtended = "1.7.3"
 sqlDelight = "2.1.0"
+uuid = "0.8.2"
 
 [libraries]
 android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "androidDriver" }
@@ -56,8 +58,10 @@ kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamel" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 native-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "androidDriver" }
 runtime = { module = "app.cash.sqldelight:runtime", version.ref = "androidDriver" }
+uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
 
 
 [plugins]

@@ -26,6 +26,7 @@ class AddBookViewModel (
             is AddBookEvent.OnPageCountChanged -> _state.update { it.copy(pageCount = event.count) }
             is AddBookEvent.OnIsbnChanged -> _state.update { it.copy(isbn = event.isbn) }
             is AddBookEvent.OnSaveBookClicked -> saveBook()
+            is AddBookEvent.OnNavigatedAway -> _state.update { it.copy(bookSaved = false) }
         }
     }
 
@@ -35,7 +36,7 @@ class AddBookViewModel (
        }
     }
 
-    private fun updateAuthor(authorId: Long, name: String) {
+    private fun updateAuthor(authorId: String, name: String) {
         _state.update { currentState ->
             val updatedAuthors = currentState.authors.map { authorState ->
                 if (authorState.id == authorId) {
@@ -48,7 +49,7 @@ class AddBookViewModel (
         }
     }
 
-    private fun removeAuthor(authorId: Long) {
+    private fun removeAuthor(authorId: String) {
         if (_state.value.authors.size <= 1 ) return
         _state.update { currentState ->
             val updatedAuthors = currentState.authors.filter { it.id != authorId }

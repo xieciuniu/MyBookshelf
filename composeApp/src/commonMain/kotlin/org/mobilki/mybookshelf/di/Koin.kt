@@ -10,9 +10,7 @@ expect fun platformModule(): Module
 fun initKoin(config: KoinAppDeclaration? = null) {
     startKoin {
         config?.invoke(this)
-        modules(
-            databaseModule,
-            platformModule() // Add the platform-specific module
-        )
+        // Use the combined list of modules
+        modules(allModules + platformModule())
     }
 }

@@ -12,15 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,7 +35,9 @@ import org.mobilki.mybookshelf.data.remote.ApiService
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onNavigateToAddBook: () -> Unit
+) {
     var searchQuery by remember { mutableStateOf("") }
     var searchResult by remember { mutableStateOf<List<BookSearch>>(emptyList()) }
     var isLoading by remember { mutableStateOf(false) }
@@ -83,7 +79,13 @@ fun HomeScreen() {
     Scaffold(
       topBar = {
           TopAppBar(title = { Text("My Bookshelf") })
-      }
+      },
+
+        floatingActionButton = {
+            FloatingActionButton(onClick = onNavigateToAddBook) {
+                Icon(Icons.Default.Add, contentDescription = "Add Book")
+            }
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier

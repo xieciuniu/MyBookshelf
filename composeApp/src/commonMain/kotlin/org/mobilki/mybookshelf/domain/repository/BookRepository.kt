@@ -1,6 +1,7 @@
 package org.mobilki.mybookshelf.domain.repository
 
-import org.mobilki.mybookshelf.data.local.model.BookStatus
+import kotlinx.coroutines.flow.*
+import org.mobilki.mybookshelf.data.local.model.*
 
 interface BookRepository {
     /**
@@ -22,4 +23,6 @@ interface BookRepository {
         pageCount: Int?,
         isbn: String?
     ): Result<Unit>
+
+    fun getAllBooks(): Flow<List<Book>>
 }

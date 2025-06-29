@@ -1,7 +1,7 @@
 package org.mobilki.mybookshelf.data.repository
 
-import org.mobilki.mybookshelf.data.local.model.AppDatabase
-import org.mobilki.mybookshelf.data.local.model.BookStatus
+import kotlinx.coroutines.flow.*
+import org.mobilki.mybookshelf.data.local.model.*
 import org.mobilki.mybookshelf.domain.repository.BookRepository
 
 class BookRepositoryImpl(
@@ -39,5 +39,32 @@ class BookRepositoryImpl(
                 queries.linkAuthorToBook(bookId = bookId, authorId = authorId)
             }
         }
+    }
+
+    override fun getAllBooks(): Flow<List<Book>> {
+        fun getAllBooks(): Flow<List<Book>> {
+            // This query comes from the 'getAllBooks:' label in your .sq file
+            return queries.getAllBooks()
+                .asFlow() // Convert the SQLDelight query to a Flow
+                .mapToList() // Map it to a list of database entities
+                .map { dbBooks ->
+                    // Map the raw database books to our clean domain models
+                    dbBooks.map { dbBook ->
+                        // This is a placeholder for authors, we'll implement this properly later
+                        val authors = queries.getAuthorsForBook(dbBook.id).executeAsList()
+                        org.mobilki.mybookshelf.domain.model.Book(
+                            id = dbBook.id,
+                            title = dbBook.title,
+                            authors = authors.map { it.name },
+                            status = BookStatus.valueOf(dbBook.status.name),
+                            coverPath = dbBook.coverPath,
+                            publishYear = dbBook.publishYear?.toInt(),
+                            pageCount = dbBook.pageCount?.toInt(),
+                            isbn = dbBook.isbn
+                        )
+                    }
+                }
+        }
+
     }
 }
